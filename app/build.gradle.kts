@@ -56,8 +56,11 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    // Core Retrofit library
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
+    // Converter library (Choose one, Gson is the most common)
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
