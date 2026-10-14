@@ -4,44 +4,46 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.siddhant.postexplorer.ui.theme.PostExplorerTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.siddhant.postexplorer.data.PostRepository
+import com.siddhant.postexplorer.data.RetrofitClient
+import com.siddhant.postexplorer.presentation.PostScreen
+import com.siddhant.postexplorer.presentation.PostViewModel
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
-        setContent {
-            PostExplorerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+
+        val factory = viewModelFactory {
+
+            initializer {
+
+                PostViewModel(
+                    repository = PostRepository(
+                        api = RetrofitClient.api
                     )
-                }
+                )
             }
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+        val postViewModel =
+            ViewModelProvider(this, factory)[PostViewModel::class.java]
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PostExplorerTheme {
-        Greeting("Android")
+        setContent {
+
+            MaterialTheme {
+
+                PostScreen(
+                    viewModel = postViewModel
+                )
+            }
+        }
     }
 }
